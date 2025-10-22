@@ -1,0 +1,141 @@
+/* base/static/base/style.css */
+
+/* ========================================================
+   !!! IMPORTANTE: SUBSTITUA ESTAS CORES PELAS DA FLYPABX !!!
+   ========================================================
+*/
+:root {
+    /* EU ESTOU USANDO AZUIS GENÉRICOS. VOCÊ DEVE MUDAR AQUI! */
+    --cor-primaria-flypabx: #005A9C;   /* Ex: O azul principal da sua marca */
+    --cor-secundaria-flypabx: #00BFFF; /* Ex: Um tom de destaque da sua marca */
+    --cor-fundo-claro: #f8f9fa;
+    --cor-texto: #212529;
+}
+
+/* Ajustes modernos */
+body {
+    background-color: var(--cor-fundo-claro);
+}
+
+/* Ajustes do Bootstrap com suas cores */
+.navbar-dark.bg-dark {
+    background-color: #212529 !important; /* Cor preta/cinza escuro */
+}
+
+.btn-primary, .badge.bg-primary {
+    background-color: var(--cor-primaria-flypabx);
+    border-color: var(--cor-primaria-flypabx);
+}
+
+.btn-primary:hover, .btn-outline-light:hover {
+    opacity: 0.9;
+}
+
+/* Links */
+a, .list-group-item-action {
+    color: var(--cor-primaria-flypabx);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--cor-secundaria-flypabx);
+}
+
+.artigo-conteudo {
+    line-height: 1.7; /* Melhora a leitura */
+}
+
+/* Faz o conteúdo do artigo quebrar linha e usar parágrafos */
+.artigo-conteudo {
+    white-space: pre-wrap; 
+}
+
+/* Deixa as imagens do artigo responsivas */
+.artigo-conteudo img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* ========================================================
+   CSS PARA O LAYOUT DO NOVO SISTEMA (SIDEBAR)
+   ======================================================== */
+
+/* Garante que o body ocupe 100% da altura */
+html, body {
+    height: 100%;
+}
+
+/* Remove o padding do body para a navbar e sidebar colarem */
+body {
+    padding-top: 56px; /* Altura da navbar fixa */
+    background-color: var(--cor-fundo-claro);
+}
+
+/* O "wrapper" principal que divide a tela em 2 colunas */
+.page-wrapper {
+    display: grid;
+    grid-template-columns: 260px 1fr; /* Largura da sidebar | Restante da tela */
+    height: calc(100vh - 56px); /* 100% da altura da tela - altura da navbar */
+}
+
+/* --- ESTILOS DO SIDEBAR (MENU LATERAL) --- */
+.sidebar-wrapper {
+    background-color: #212529; /* Mesma cor preta da sua navbar */
+    color: #f8f9fa;
+    overflow-y: auto; /* Deixa o menu rolar se tiver muitos itens */
+    position: fixed;
+    top: 56px; /* Começa abaixo da navbar */
+    left: 0;
+    height: calc(100vh - 56px);
+    width: 260px;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    padding-top: 1rem;
+}
+
+.sidebar-nav-item-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #6c757d; /* Cinza */
+    padding: 0.5rem 1.5rem;
+}
+
+.sidebar-nav-item-divider {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 1rem 1.5rem;
+}
+
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    color: #adb5bd; /* Cor do link (cinza claro) */
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar-nav-link i {
+    font-size: 1.1rem;
+    margin-right: 0.75rem;
+    width: 20px; /* Alinha os ícones */
+}
+
+.sidebar-nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff; /* Texto branco ao passar o mouse */
+}
+
+/* --- ESTILOS DO CONTEÚDO PRINCIPAL --- */
+.main-content {
+    grid-column: 2 / 3; /* Ocupa a segunda coluna do grid */
+    overflow-y: auto; /* Deixa SÓ o conteúdo rolar */
+}
