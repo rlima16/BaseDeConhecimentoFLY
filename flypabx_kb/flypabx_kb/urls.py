@@ -1,12 +1,13 @@
-# flypabx_kb/flypabx_kb/urls.py
-
 from django.contrib import admin
-from django.urls import path, include # 'include' deve estar aqui
+from django.urls import path, include
 
-# REMOVA a linha "from . import views" se ela estiver aqui
+#
+# Observe que a linha "from . import views" NÃO ESTÁ AQUI.
+# Esta é a correção principal.
+#
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')), 
-    path('', include('base.urls')), # Esta linha importa o outro arquivo
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('base.urls')), # Envia todo o tráfego principal para o app 'base'
 ]

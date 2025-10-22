@@ -19,4 +19,41 @@
 <div class="artigo-conteudo">
     {{ artigo.conteudo|safe }}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Pega o parâmetro 'highlight' da URL (ex: ?highlight=sip)
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('highlight');
+
+    // 2. Se não houver parâmetro, não faz nada
+    if (!query) {
+        return;
+    }
+
+    // 3. Pega o elemento que contém o conteúdo do artigo
+    const contentElement = document.querySelector('.artigo-conteudo');
+    if (!contentElement) {
+        return;
+    }
+
+    // 4. Prepara a palavra para busca (escapa caracteres especiais de Regex)
+    const escapedQuery = query.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    
+    // 5. Cria a Expressão Regular:
+    // 'gi' = global (substitui todas) e case-insensitive (ignora maiúsculas/minúsculas)
+    const re = new RegExp(escapedQuery, 'gi');
+
+    // 6. Pega o HTML de dentro do artigo
+    const originalHTML = contentElement.innerHTML;
+
+    // 7. Substitui todas as ocorrências da palavra por ela mesma dentro de uma tag <mark>
+    // '$&' é um marcador especial que insere o texto que foi encontrado
+    const newHTML = originalHTML.replace(re, '<mark class="highlight-search">$&</mark>');
+
+    // 8. Coloca o novo HTML (com destaques) de volta na página
+    contentElement.innerHTML = newHTML;
+});
+</script>
+
 {% endblock %}

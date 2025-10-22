@@ -1,7 +1,8 @@
 # base/views.py
 from django.shortcuts import render, get_object_or_404
 from .models import Categoria, Artigo
-from django.contrib.auth.decorators import login_required # Importe isso
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q # Importação para a busca com "OU"
 
 @login_required # <-- Isso protege a página, exigindo login
 def home(request):
@@ -25,3 +26,22 @@ def categoria_detail(request, slug):
 def artigo_detail(request, slug):
     artigo = get_object_or_404(Artigo, slug=slug)
     return render(request, 'base/artigo_detail.html', {'artigo': artigo})
+
+
+# --- NOVA FUNÇÃO DE BUSCA ADICIONADA AQUI ---
+
+@login_required
+def search_results(request):
+    query = request.GET.get('q') # Pega o parâmetro 'q' da URL (ex: /search/?q=sip)
+    results = []
+
+    if query:
+        # Busca artigos onde o 'titulo' OU o 'conteudo' contenham a palavra (sem diferenciar maiúsculas/minúsculas)
+        results = Artigo.objects.filter(
+            Q(titulo__icontains=query) | Q(conteudo__icontains=query)
+        ).distinct()
+
+    return render(request, 'base/search_results.html', {
+        'query': query,
+        'results': results,
+    })

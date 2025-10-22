@@ -139,3 +139,87 @@ body {
     grid-column: 2 / 3; /* Ocupa a segunda coluna do grid */
     overflow-y: auto; /* Deixa SÓ o conteúdo rolar */
 }
+
+{% block head_extra %}
+<style>
+    body {
+        background-color: #343a40 !important; /* Fundo cinza escuro */
+        padding-top: 0 !important; /* Remove o espaço da navbar */
+    }
+
+    /* 1. ESCONDE a navbar e o sidebar */
+    .navbar,
+    .sidebar-wrapper {
+        display: none !important;
+    }
+
+    /* 2. FAZ o conteúdo principal ocupar a tela inteira */
+    .page-wrapper {
+        display: grid;
+        grid-template-columns: 1fr !important; /* Uma única coluna */
+        height: 100vh !important; /* 100% da altura da tela */
+    }
+
+    .main-content {
+        grid-column: 1 / -1 !important; /* Ocupa toda a largura */
+        overflow-y: auto;
+        /* Centraliza o card de login verticalmente e horizontalmente */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 3. Esconde o footer (rodapé) da página de login */
+    .main-content footer {
+        display: none;
+    }
+
+    /* --- Estilos do Card (do passo anterior, com ajustes) --- */
+    .card {
+        background-color: #212529; 
+        color: #f8f9fa;            
+        border: none;
+        width: 100%;
+        max-width: 450px; /* Limita a largura do card de login */
+    }
+    hr {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        opacity: 1;
+    }
+    .form-control {
+        background-color: #343a40; 
+        color: #f8f9fa;            
+        border-color: #495057;     
+    }
+    .form-control:focus {
+        background-color: #343a40;
+        color: #f8f9fa;
+        border-color: #005A9C;     
+        box-shadow: 0 0 0 0.25rem rgba(0, 90, 156, 0.5); 
+    }
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active  {
+        -webkit-box-shadow: 0 0 0 30px #343a40 inset !important; 
+        -webkit-text-fill-color: #f8f9fa !important;
+    }
+</style>
+{% endblock %}
+
+/* --- ESTILOS DA BARRA DE BUSCA --- */
+.search-bar-wrapper {
+    /* Faz a barra de busca "grudar" no topo do conteúdo */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* --- ESTILO DO DESTAQUE DA PALAVRA --- */
+.highlight-search {
+    background-color: #FFF3A3; /* Um amarelo-claro */
+    color: #000;
+    font-weight: bold;
+    padding: 1px 3px;
+    border-radius: 3px;
+}
