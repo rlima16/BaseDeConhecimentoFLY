@@ -15,11 +15,19 @@ def home(request):
 
 @login_required
 def categoria_detail(request, slug):
+    # Encontra a categoria atual
     categoria = get_object_or_404(Categoria, slug=slug)
+    
+    # Busca as subcategorias diretas (filhas) desta categoria
+    subcategorias = categoria.children.all() 
+    
+    # Busca os artigos que pertencem DIRETAMENTE a esta categoria
     artigos = Artigo.objects.filter(categoria=categoria)
+    
     return render(request, 'base/categoria_detail.html', {
         'categoria': categoria,
-        'artigos': artigos
+        'subcategorias': subcategorias, # Passa as subcategorias para o template
+        'artigos': artigos,            # Passa os artigos diretos para o template
     })
 
 @login_required

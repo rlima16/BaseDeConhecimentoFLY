@@ -1,23 +1,22 @@
 /* base/static/base/style.css */
 
 /* ========================================================
-   !!! IMPORTANTE: SUBSTITUA ESTAS CORES PELAS DA FLYPABX !!!
-   ========================================================
-*/
+   CORES PRINCIPAIS (AJUSTE SE QUISER)
+   ======================================================== */
 :root {
-    /* EU ESTOU USANDO AZUIS GENÉRICOS. VOCÊ DEVE MUDAR AQUI! */
-    --cor-primaria-flypabx: #005A9C;   /* Ex: O azul principal da sua marca */
-    --cor-secundaria-flypabx: #00BFFF; /* Ex: Um tom de destaque da sua marca */
+    --cor-primaria-flypabx: #005A9C;
+    --cor-secundaria-flypabx: #00BFFF;
     --cor-fundo-claro: #f8f9fa;
     --cor-texto: #212529;
 }
 
-/* Ajustes modernos */
+/* ========================================================
+   ESTILOS GERAIS (DA NAVEGAÇÃO E ARTIGOS)
+   ======================================================== */
 body {
     background-color: var(--cor-fundo-claro);
 }
 
-/* Ajustes do Bootstrap com suas cores */
 .navbar-dark.bg-dark {
     background-color: #212529 !important; /* Cor preta/cinza escuro */
 }
@@ -31,7 +30,6 @@ body {
     opacity: 0.9;
 }
 
-/* Links */
 a, .list-group-item-action {
     color: var(--cor-primaria-flypabx);
     text-decoration: none;
@@ -42,15 +40,10 @@ a:hover {
 }
 
 .artigo-conteudo {
-    line-height: 1.7; /* Melhora a leitura */
-}
-
-/* Faz o conteúdo do artigo quebrar linha e usar parágrafos */
-.artigo-conteudo {
+    line-height: 1.7;
     white-space: pre-wrap; 
 }
 
-/* Deixa as imagens do artigo responsivas */
 .artigo-conteudo img {
     max-width: 100%;
     height: auto;
@@ -60,37 +53,30 @@ a:hover {
 }
 
 /* ========================================================
-   CSS PARA O LAYOUT DO NOVO SISTEMA (SIDEBAR)
+   CSS PARA O LAYOUT DO SISTEMA (SIDEBAR)
    ======================================================== */
 
-/* Garante que o body ocupe 100% da altura */
 html, body {
     height: 100%;
 }
 
-/* Remove o padding do body para a navbar e sidebar colarem */
 body {
     padding-top: 56px; /* Altura da navbar fixa */
     background-color: var(--cor-fundo-claro);
 }
 
-/* O "wrapper" principal que divide a tela em 2 colunas */
 .page-wrapper {
     display: grid;
     grid-template-columns: 260px 1fr; /* Largura da sidebar | Restante da tela */
-    height: calc(100vh - 56px); /* 100% da altura da tela - altura da navbar */
+    height: calc(100vh - 56px); 
 }
 
 /* --- ESTILOS DO SIDEBAR (MENU LATERAL) --- */
 .sidebar-wrapper {
-    background-color: #212529; /* Mesma cor preta da sua navbar */
+    background-color: #212529;
     color: #f8f9fa;
-    overflow-y: auto; /* Deixa o menu rolar se tiver muitos itens */
-    position: fixed;
-    top: 56px; /* Começa abaixo da navbar */
-    left: 0;
-    height: calc(100vh - 56px);
-    width: 260px;
+    overflow-y: auto; 
+    height: calc(100vh - 56px); 
 }
 
 .sidebar-nav {
@@ -104,7 +90,7 @@ body {
     font-size: 0.75rem;
     text-transform: uppercase;
     font-weight: 700;
-    color: #6c757d; /* Cinza */
+    color: #6c757d;
     padding: 0.5rem 1.5rem;
 }
 
@@ -117,7 +103,7 @@ body {
 .sidebar-nav-link {
     display: flex;
     align-items: center;
-    color: #adb5bd; /* Cor do link (cinza claro) */
+    color: #adb5bd;
     text-decoration: none;
     padding: 0.75rem 1.5rem;
     transition: all 0.2s ease;
@@ -126,100 +112,48 @@ body {
 .sidebar-nav-link i {
     font-size: 1.1rem;
     margin-right: 0.75rem;
-    width: 20px; /* Alinha os ícones */
+    width: 20px;
 }
 
 .sidebar-nav-link:hover {
     background-color: rgba(255, 255, 255, 0.05);
-    color: #ffffff; /* Texto branco ao passar o mouse */
+    color: #ffffff;
 }
 
 /* --- ESTILOS DO CONTEÚDO PRINCIPAL --- */
 .main-content {
-    grid-column: 2 / 3; /* Ocupa a segunda coluna do grid */
-    overflow-y: auto; /* Deixa SÓ o conteúdo rolar */
+    grid-column: 2 / 3;
+    overflow-y: auto;
+    height: calc(100vh - 56px);
 }
 
-{% block head_extra %}
-<style>
-    body {
-        background-color: #343a40 !important; /* Fundo cinza escuro */
-        padding-top: 0 !important; /* Remove o espaço da navbar */
-    }
 
-    /* 1. ESCONDE a navbar e o sidebar */
-    .navbar,
-    .sidebar-wrapper {
-        display: none !important;
-    }
 
-    /* 2. FAZ o conteúdo principal ocupar a tela inteira */
-    .page-wrapper {
-        display: grid;
-        grid-template-columns: 1fr !important; /* Uma única coluna */
-        height: 100vh !important; /* 100% da altura da tela */
-    }
-
-    .main-content {
-        grid-column: 1 / -1 !important; /* Ocupa toda a largura */
-        overflow-y: auto;
-        /* Centraliza o card de login verticalmente e horizontalmente */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* 3. Esconde o footer (rodapé) da página de login */
-    .main-content footer {
-        display: none;
-    }
-
-    /* --- Estilos do Card (do passo anterior, com ajustes) --- */
-    .card {
-        background-color: #212529; 
-        color: #f8f9fa;            
-        border: none;
-        width: 100%;
-        max-width: 450px; /* Limita a largura do card de login */
-    }
-    hr {
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        opacity: 1;
-    }
-    .form-control {
-        background-color: #343a40; 
-        color: #f8f9fa;            
-        border-color: #495057;     
-    }
-    .form-control:focus {
-        background-color: #343a40;
-        color: #f8f9fa;
-        border-color: #005A9C;     
-        box-shadow: 0 0 0 0.25rem rgba(0, 90, 156, 0.5); 
-    }
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus, 
-    input:-webkit-autofill:active  {
-        -webkit-box-shadow: 0 0 0 30px #343a40 inset !important; 
-        -webkit-text-fill-color: #f8f9fa !important;
-    }
-</style>
-{% endblock %}
-
-/* --- ESTILOS DA BARRA DE BUSCA --- */
-.search-bar-wrapper {
-    /* Faz a barra de busca "grudar" no topo do conteúdo */
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
 
 /* --- ESTILO DO DESTAQUE DA PALAVRA --- */
 .highlight-search {
-    background-color: #FFF3A3; /* Um amarelo-claro */
+    background-color: #FFF3A3;
     color: #000;
     font-weight: bold;
     padding: 1px 3px;
     border-radius: 3px;
+}
+
+/* NENHUM CÓDIGO DO LOGIN.HTML (COMO .navbar { display: none; }) 
+ESTÁ PRESENTE NESTE ARQUIVO.
+*/
+
+/* ========================================================
+   ESTILO PARA O LOGO NO SIDEBAR (ADICIONADO DE VOLTA)
+   ======================================================== */
+.sidebar-logo-wrapper {
+    padding: 1.5rem 1rem; /* Espaçamento (em cima/baixo | dos lados) */
+    text-align: center;
+    /* Adiciona uma linha divisória igual a do menu */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+.sidebar-logo-wrapper .img-fluid {
+    max-height: 60px; /* Define uma altura máxima para o logo. Ajuste se precisar. */
+    width: auto;
 }
