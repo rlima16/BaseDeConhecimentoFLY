@@ -95,8 +95,9 @@
             </div>
         {% endif %}
         
-        <form method="post">
+        <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
             <div class="mb-3">
                 <label for="id_username" class="form-label">Usuário</label>
                 <input type="text" name="username" id="id_username" class="form-control form-control-lg" required>
