@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url  # Importa o dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +22,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)5adz6m3eu_ft(ei6lo#voh7www_9an1peir+xmgjsxt+ai^t$'
+# Carrega a SECRET_KEY de uma variável de ambiente no Render
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Fica False no Render (onde 'RENDER' existe) e True localmente
+DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = []
+# Lista de hosts permitidos
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+# Pega o hostname externo do Render (se estiver no Render)
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# Confia no domínio do Render para formulários (login, etc.)
+# Isso é obrigatório para HTTPS
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS = [f'https://{RENDER_EXTERNAL_HOSTNAME}']
 
 
 # Application definition
@@ -38,11 +53,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base',
-    'ckeditor',  
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- ADICIONADO WHITENOISE
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,8 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'base.context_processors.all_categories', # <-- ADICIONE ESTA LINHA
+                'django.contrib.messages.middleware.context_processors.messages',
+                'base.context_processors.all_categories', # Seu processador de contexto
             ],
         },
     },
@@ -76,11 +92,16 @@ WSGI_APPLICATION = 'flypabx_kb.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# ATENÇÃO: Configuração do Banco de Dados
+# O Render usa um banco de dados PostgreSQL. O Sqlite3 será apagado a cada deploy.
+# Esta configuração usa o PostgreSQL no Render (via DATABASE_URL)
+# e mantém o sqlite3 para uso local (no seu PC).
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        # Usa o 'db.sqlite3' local se a variável DATABASE_URL não for encontrada
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600
+    )
 }
 
 
@@ -106,12 +127,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
+# Alterado para Português do Brasil e Fuso de São Paulo
+LANGUAGE_CODE = 'pt-br'
+TIME_ZONE = 'America/Sao_Paulo'
+USE_I1N = True
 USE_TZ = True
 
 
@@ -119,6 +138,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Configuração para o WhiteNoise e 'collectstatic' no Render
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [
+    BASE_DIR / 'base/static', # Diz ao collectstatic onde encontrar os estáticos do seu app 'base'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
